@@ -53,7 +53,7 @@ In this tutorial you will learn how to use the EM validation program of the AUSA
 
 <h4>Part I: Making AUSAXS run on your computer</h4>
 	AUSAXS ships with two versions: one with a simple, graphical interface, and another with a more advanced command-line interface.<br>
-	Both versions can be used for the first part of this tutorial, but the advanced version is required for the second part.
+	Both versions can be used for this tutorial.
 	<ul> To use AUSAXS:
 		<li>Download the newest release from <a href="https://github.com/AUSAXS/AUSAXS/releases" target="_blank">https://github.com/AUSAXS/AUSAXS/releases</a></li>
 		<li>Since Microsoft & Apple both require yearly fees to sign a program, an additional platform-dependent step must be performed to make it runnable on these systems:
@@ -67,9 +67,8 @@ In this tutorial you will learn how to use the EM validation program of the AUSA
 <h4>Part II: Performing a basic validation</h4>
 	Now we are ready to perform our first validation. Download the files:
 	<ul>
-		<li>The <a href="https://www.sasbdb.org/media/intensities_files/SASDJG5.dat" target="_blank">SAXS measurement,</a></li>
-		<li>The <a href="https://ftp.ebi.ac.uk/pub/databases/emdb/structures/EMD-24889/map/emd_24889.map.gz" target="_blank">EM map file,</a></li>
-		<li>And, optionally, the <a href="https://www.sasbdb.org/media/pdb_file/SASDJG5_fit1_model1.pdb" target="_blank">PDB structure file.</a> </li>
+		<li>The <a href="https://www.sasbdb.org/media/intensities_files/SASDJG5.dat" target="_blank">SAXS measurement</a></li>
+		<li>The <a href="https://ftp.ebi.ac.uk/pub/databases/emdb/structures/EMD-24889/map/emd_24889.map.gz" target="_blank">EM map file</a></li>
 		Remember to unpack the zipped map before continuing. 
 	</ul>
 
@@ -88,48 +87,126 @@ In this tutorial you will learn how to use the EM validation program of the AUSA
 			</ul>
 		</li>
 
-<h4>Part III: Insert images (and make it square if used as main illustration)</h4>
+<h4>Part III: Analyzing the output</h4>
+	You should now have the following files in the directory containing the program:
+	<ol>
+		<li>A "report.txt" file</li>
+		<li>A "SASDJG5.scat" and "ausaxs.fit"</li>
+		<li>Various plots</li>
+		<li>Various "*.png.plot" files</li>
+		<li>A "models" folder</li>
+	</ol>
 	<p>
-		Images can be inserted in the tutorial <br>
-		<img src="Template.png" style="width:200px"><br> 
-		<code>&lt;img src="Template.png" style="width:150px"&gt;</code><br>
-		Images make the tutorials visually appealing and help explain key concepts and results.<br>
-		If you have a picture that you want to user as cover illustration for you tutorial (to appear at <a href="sastutorial.org"  target="_blank">sastutorial.org</a> front page), it should be square format. 
-		If it is not, you can, e.g., insert it in a <a href="Template.pptx" target="_blank">power point</a>, and adjust the size (Design -> Slide size), and export it as an image<br>
-		<img src="square_format.png" style="width:500px"><br> 
-		Try to <a href="Template.html" target="_blank">download this tutorial</a> (right-click > save file as), and change the cover photo (adjust dimensions of the new cover photo if necessary)<br>
+		We will go through each of these in order. 
 	</p>
 
-<h4>Part IV: Higlight with a box</h4>
-    <p>
-	If you have something to highlight (a concept, a check list, a step-by-step guide), it can be highlighted. E.g. this list <br>
-	<code>
-	&lt;ol style="border-width:3px; border-style:solid;border-color:#697698; padding: 1em; padding-left: 40px; background-color: #f9f9f9"&gt; <br>
-	&lt;b&gt;How to design a new tutorial:&lt;/b&gt;<br>
-	&lt;li&gt;...&lt;\li&gt;<br>
-	&lt;ol&gt;
-	</code>
-	<ol style="border-width:3px; border-style:solid;border-color:#697698; padding: 1em; padding-left: 40px; background-color: #f9f9f9"> 
-		<b>How to design a new tutorial:</b>
-		<li>Identify a subject that should be covered with a tutorial.</li>
-		<li>Consider overall and specific learning outcomes.</li>
-		<li>Design 1-3 challenges that can be solved after requiring the skills of the tutorials. Preferably including analysis of real SAXS or SANS data.</li>
-		<li>Copy the <a href="https://github.com/andreashlarsen/SAStutorials" target="_blank">SASTutorial GitHub page</a> to your computer.</li>
-		<li>Copy the template folder and rename it.</li>
-		<li>To edit the html files, you must open them in a text editor, if you open them in a browser, you see the final result.</li>
-		<li>Make 2-4 parts in the tutorial with walk-through and explained analysis, providing files so the user can do the analysis themself. Explain rule-of-thumbs and pitfalls, og technical challenges. Use images for illustarations, e.g. screenshots from a software package that is demonstrated.</li>
-		<li>Find a representative image for the tutorial, make it square format and put in the folder.</li>
-		<li>Add your tutorial to the index file (copy one of the other entries and edit).</li>
-		<li>Check that everything is working. This can be done locally, in a browser.</li>
-		<li>Upload your new tutorial and the edited index file to the GitHub page (this will be checked by developers before being merged and thus be part of the sastutorials.org website).</li>
-	</ol>
-    </p>
+	<h6>report.txt</h6>
+	<p>
+		This file is just a copy of the terminal output. If you ran the fit using the terminal, the first line will also contain the command used to perform this fit.<br><br>
+		The first section is just the title, "FIT REPORT".<br><br>
+		The second section contains various statistical properties of the fit. Our primary interest here is the reduced chi-square value, listed as chi2/dof.
+		This value is equivalent to what is typically reported by other fitting programs such as the ATSAS package. 
+		For a perfect fit this value should be close to unity. 
+		However, since we already know in advance we will not be getting a perfect fit when comparing two different experimental techniques, we will not put too much weight on its exact value.<br><br>
+		The third section contains the optimized parameter values. We are not too interested in these either. <br><br>
+		The fourth section is relevant if you want to visualize the optimal map structure using PyMOL. 
+		It contains the PyMOL alpha-level equivalent to the optimal cutoff threshold value. Simply input this value in the "level" field when loading the map, and select either "mesh" or "surface" to see the optimized map. 
+		This section also contains the mass of the optimized structure. However, this value is <i>very</i> approximative, and only serves as a quick guideline.
+	</p>
+
+	<h6>SASDJG5.scat & ausaxs.fit</h6>
+	<p>
+		These two files contains the <i>used</i> part of the experimental SAXS data and the fitted intensity, respectively.
+		Both files are compatible with the plotting utility from the <i>ATSAS</i> package. 
+	</p>
+
+	<h6>Understanding the plots</h6>
+	<p>
+		<ul>You will find a number of ".png" files in the directory.
+			<li><i>chi2_evaluated_points_limited.png</i>: This plot shows the relevant chi-square value for every threshold value sampled during the fit. 
+				This is very useful for checking the convergence - if the lowest chi-square value is found at either edge of the x-axis, you should rerun the fit using larger bounds. 
+				The plot is also useful for seeing if there could be more than one optimal solution. These should already be marked by a blue point. We will return to these later.
+			</li>
+			<li><i>chi2_evaluated_points_full.png</i>: This plot is identical to the previous one, except it shows <i>all</i> chi-square values. 
+				The other version is usually more relevant since it can better show the variation near the minimum.
+			</li>
+			<li><i>chi2_near_minimum.png</i>: This is yet another chi-square landscape, except with greater detail near the found minimum. 
+				Though the true minima is marked in blue, it is better and more honest to report the mean chi-square value as denoted by the red line.
+				This plot is primarily useful for estimating the quality of the found minimum. 
+				Large chi-square fluctuations in this region indicates a poor minima, which is typically due to too few voxels. 
+				In our case the quality is okay. You can try improving it by rerunning the fit using a sampling frequency of 1, though this will take substantially longer.
+			</li>
+			<li><i>log.png and loglog.png</i>: These two plots is simply a plot of the SASDJG5.scat and ausaxs.fit files with a logarithmic y-axis.
+				The latter also uses a logarithmic x-axis, should you prefer this. 
+				The optimal chi-square value is also shown, though as we previously argued, we are not too interested in its specific value. 
+				Instead, we want to <i>qualitatively</i> compare the two profiles. 
+				Though this type of analysis is quite subjective, if the same features are present in roughly the same locations, we can be content. 
+				In our case, the agreement is good enough to validate the map. 
+			</li>
+		</ul>
+
+		The landscape plots also each have an associated "*_mass" version, where the previous cutoff-axis has been replaced with an approximate mass-axis. 
+
+		The ".png.plot" files are the instruction files for generating these plots using the custom plotting script. 
+		They have no real purpose now that the plots are complete, and can safely be deleted. <br><br>
+		<i>Advanced</i>: You can also modify these plotting instructions to customize the plots using a simple text editor.
+		The format is somewhat self-explanatory, though an extensive guide is available at <a href="https://github.com/AUSAXS/AUSAXS" target="_blank">https://github.com/AUSAXS/AUSAXS</a> should you need it.
+	</p>
+
+	<h6>The "models" folder</h6>
+		<p>
+			When we earlier looked at the chi-square landscape, we saw there were multiple almost equivalent minima.
+			The fitter has chosen the absolutely smallest one and generated the dummy structure "model.pdb" for it.
+			Structures for the other minima have instead been saved in the "models" folder. 
+			The "info.txt" contains a small description of each. <br><br>
+
+			Note that sometimes the dummy structure may contain more than a hundred thousand dummy atoms. 
+			Since the PDB format officially only supports up to 99 999 entries, in such cases the structure will be split over multiple files. 
+		</p>
+
+<h4>Continuing the analysis</h4>
+	<p>
+		Now that we understand the output, we are ready to continue our analysis.<br>
+		<img src="chi2_landscape_1.png" style="width:500px"/><br>
+
+		Looking at the chi-square landscape, it seems like a lower minima could potentially be hiding just out of sight, at sigma &gt; 10. 
+		To check this, we should rerun the fit and make sure to cover this area. <br><br>
+
+		Change the maximum alpha-level to 15. 
+		Since we are impatient and know there are no minima at sigma &lt; 6 anyway, let us skip these too by also modifying the minimum level. <br><br>
+		<img src="chi2_landscape_2.png" style="width:500px"/><br>
+
+		Looking at the new chi-square landscape, it appears as though our original bounds were fine. 
+		However, there is a lot of noise in the high-q region. 
+		This is primarily because the dummy structures in this region contains too few dummy atoms. 
+		To fix this, we can repeat the fit using a sampling frequency of 1, to ensure we are not discarding any map data. 
+		Since we are only scanning relatively high alpha-levels, this shouldn't take too long. <br><br>
+		<img src="chi2_landscape_3.png" style="width:500px"/><br>
+
+		This final chi-square landscape has a much smaller variation, as expected. 
+		Including more map information was also enough to remove the additional minima in the low-q region. 
+		This point is our final solution. 
+	</p>
+
+<h6>And that's it!</h6>
+		<p>
+			You have now learned how to perform and understand a simple validation of an EM map. 
+			You can either repeat the above analysis using your own map, or you can try your hand at the challenges posed below. 
+		</p>
 
 <h4>Challenges</h4>
-	The challenges are open tasks that can be solved using the parts above. E.g.:
 	<ul>
-		<li>Challenge 1: Download this tutorial and add a new part (Part 5) to the tutorial. To see the result, open in a browser, and to edit files, open in a text editor.</li>
-		<li>Challenge 2: Add a tutorial to SAStutorials.org, on any aspect of SAXS/SANS analysis that is not yet covered.</li>
+		<li>Challenge 1: Try validating the emd_24889 map using incompatible SAXS data. 
+			As an example, you could try with these data: <i>link</i>. 
+			How can you see that the map and this new SAXS data are not in agreement?
+		</li>
+		<li>Challenge 2: Try visualizing both the dummy structure and the corresponding optimized map together in PyMOL. 
+			Is the dummy structure a good approximation of the map?
+			You can also try comparing with the PDB structure associated with the SAXS data (<a href="https://www.sasbdb.org/media/pdb_file/SASDJG5_fit1_model1.pdb" target="_blank">download link</a>). 
+		</li>
+		<li>Challenge 3: Try repeating the second fit, using a sampling frequency of 2 with the alpha-level bounds 6, 15. 
+			What happens? Does it make sense why the mean chi-square value should be reported?
+		</li>
 	</ul>
 
 <!--
