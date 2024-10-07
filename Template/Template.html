@@ -58,8 +58,17 @@ In this tutorial you will learn how to use the EM validation program of the AUSA
 		<li>Download the newest release from <a href="https://github.com/AUSAXS/AUSAXS/releases" target="_blank">https://github.com/AUSAXS/AUSAXS/releases</a></li>
 		<li>Since Microsoft & Apple both require yearly fees to sign a program, an additional platform-dependent step must be performed to make it runnable on these systems:
 			<ul>
-				<li><i>Windows</i>: Your SmartScreen filter may warn you about running unsigned software. You can simply ignore this warning and run it anyway.</li>
-				<li><i>Mac</i>: Downloaded unsigned programs </li>
+				<li><i>Windows</i>: Your SmartScreen filter may warn you about running unsigned software. 
+					You can simply ignore this warning and run it anyway.
+					The first time you open the program can take a bit longer, as SmartScreen may decide to run a quick scan of it. 
+				</li>
+				<li><i>Mac</i>: Downloaded unsigned programs are not runnable by default. To change this:
+					<ul>
+						<li><i>Graphical interface</i>: Shift-click the program and hit "open". This will allow you to run it despite it being unsigned.</li>
+						<li><i>Terminal</i>: Navigate to the downloaded folder using <code>cd &lt;path&gt;</code>. <br>
+							Then make the program runnable using the command <code>chmod 755 em_fitter_gui</code> </li>
+					</ul>
+				</li>
 			</ul>
 		</li>
 	</ul>
@@ -77,12 +86,12 @@ In this tutorial you will learn how to use the EM validation program of the AUSA
 		<li>Graphical interface: <br>
 			If you have moved the program from the downloaded folder, make sure to also move the plotting script to the same destination.<br>
 			Open the AUSAXS program <code>em_fitter_gui</code> and load the EM map and the SAXS data. <br>
-			For this run only, set the "sample frequency" to 3 (and make sure to hit "enter"!). Then click the "start" button.</li>
+			For this run only, set the "sample frequency" to 2 (and make sure to hit "enter"!). Then click the "start" button.</li>
 		<li>Command-line interface: <br> 
 			Move all files to the same directory, and launch a terminal from there. <br>
-			Then run the command: <code>em_fitter emd_24889.map SASDJG5.dat --frequency 3</code></li>
+			Then run the command: <code>em_fitter emd_24889.map SASDJG5.dat --frequency 2</code></li>
 			<ul> When the program is done, run the following plotting command:
-				<li><i>Windows</i>: <code>plotter.exe</code></li>
+				<li><i>Windows</i>: <code>./plotter.exe</code></li>
 				<li><i>Mac or Linux</i>: <code>python scripts/plot.py</code></li>
 			</ul>
 		</li>
@@ -107,7 +116,7 @@ In this tutorial you will learn how to use the EM validation program of the AUSA
 		The second section contains various statistical properties of the fit. Our primary interest here is the reduced chi-square value, listed as chi2/dof.
 		This value is equivalent to what is typically reported by other fitting programs such as the ATSAS package. 
 		For a perfect fit this value should be close to unity. 
-		However, since we already know in advance we will not be getting a perfect fit when comparing two different experimental techniques, we will not put too much weight on its exact value.<br><br>
+		However, since we already know in advance we will not be getting a perfect fit due to us comparing two different experimental techniques, we will not put too much weight on its exact value.<br><br>
 		The third section contains the optimized parameter values. We are not too interested in these either. <br><br>
 		The fourth section is relevant if you want to visualize the optimal map structure using PyMOL. 
 		It contains the PyMOL alpha-level equivalent to the optimal cutoff threshold value. Simply input this value in the "level" field when loading the map, and select either "mesh" or "surface" to see the optimized map. 
@@ -117,6 +126,7 @@ In this tutorial you will learn how to use the EM validation program of the AUSA
 	<h6>SASDJG5.scat & ausaxs.fit</h6>
 	<p>
 		These two files contains the <i>used</i> part of the experimental SAXS data and the fitted intensity, respectively.
+		The former is just a standard text file, though with the custom extension ".scat" to avoid accidentally overwriting the original data.
 		Both files are compatible with the plotting utility from the <i>ATSAS</i> package. 
 	</p>
 
@@ -169,7 +179,7 @@ In this tutorial you will learn how to use the EM validation program of the AUSA
 		Now that we understand the output, we are ready to continue our analysis.<br>
 		<img src="chi2_landscape_1.png" style="width:500px"/><br>
 
-		Looking at the chi-square landscape, it seems like a lower minima could potentially be hiding just out of sight, at sigma &gt; 10. 
+		As per our previous discussion, we are looking for minima in this chi-square landscape plot. Based on this, it seems like a lower minima could potentially be hiding just out of sight, at sigma &gt; 10. 
 		To check this, we should rerun the fit and make sure to cover this area. <br><br>
 
 		Change the maximum alpha-level to 15. 
@@ -185,7 +195,7 @@ In this tutorial you will learn how to use the EM validation program of the AUSA
 
 		This final chi-square landscape has a much smaller variation, as expected. 
 		Including more map information was also enough to remove the additional minima in the low-q region. 
-		This point is our final solution. 
+		The remaining point is our final result. 
 	</p>
 
 <h6>And that's it!</h6>
